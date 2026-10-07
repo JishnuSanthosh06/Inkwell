@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inkwell Razorpay Test</title>
+</head>
+
+<body>
+
+    <h2>Inkwell Razorpay Test Payment</h2>
+
+    <button id="pay-button">
+        Pay ₹199
+    </button>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        const options = {
+            key: "rzp_test_Tf2FqcMxxx0UxK",
+
+            amount: 19900,
+
+            currency: "INR",
+
+            name: "Inkwell",
+
+            description: "Monthly Membership",
+
+            order_id: "order_Tgif9xb48l6zCR",
+
+            handler: function (response) {
+
+                alert("Payment successful!");
+
+                console.log("Payment successful");
+                console.log(
+                    "Payment ID:",
+                    response.razorpay_payment_id
+                );
+
+                console.log(
+                    "Order ID:",
+                    response.razorpay_order_id
+                );
+
+                console.log(
+                    "Signature:",
+                    response.razorpay_signature
+                );
+            },
+
+            modal: {
+                ondismiss: function () {
+                    console.log("Razorpay checkout closed");
+                }
+            },
+
+            theme: {
+                color: "#000000"
+            }
+        };
+
+        const razorpay = new Razorpay(options);
+
+        razorpay.on("payment.failed", function (response) {
+
+            console.log("Payment failed");
+            console.log("Error object:", response.error);
+
+            alert(
+                "Payment failed:\n\n" +
+                "Code: " + response.error.code + "\n" +
+                "Description: " + response.error.description
+            );
+        });
+
+        document.getElementById("pay-button").onclick = function (event) {
+
+            event.preventDefault();
+
+            razorpay.open();
+        };
+    </script>
+
+</body>
+</html>
+
